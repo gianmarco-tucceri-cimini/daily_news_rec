@@ -1,5 +1,6 @@
 <html>
   <body>
+    <div class="article-grid">
     {% for article in articles %}
       <div class="article-box">
         <a href="{{ article.link }}">
@@ -8,6 +9,7 @@
         </a>
       </div>
     {% endfor %}
+    </div>
   </body>
 </html>
 
@@ -15,6 +17,11 @@
   body {
     background-color: #ccc;
     font-family: Roboto, sans-serif;
+  }
+  .article-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   }
   .article-box {
     background-color: #fff;
@@ -25,12 +32,14 @@
     text-align: center;
   }
   .article-box img {
-    width: 100%;
+    width: 300px;
+    height: 200px;
   }
   .article-box p {
     margin: 0;
     font-size: 20px;
     font-weight: bold;
     padding: 10px;
+    height: 100px;
   }
 </style>
