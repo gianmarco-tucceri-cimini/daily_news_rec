@@ -1,0 +1,36 @@
+<html>
+  <body>
+    {% for article in articles %}
+      <div class="article-box">
+        <a href="{{ article.link }}">
+          <img src="{{ article.image }}">
+          <p>{{ article.title }}</p>
+        </a>
+      </div>
+    {% endfor %}
+  </body>
+</html>
+
+<style>
+  body {
+    background-color: #ccc;
+    font-family: Roboto, sans-serif;
+  }
+  .article-box {
+    background-color: #fff;
+    border-radius: 10px;
+    display: block;
+    width: 300px;
+    margin: 10px auto;
+    text-align: center;
+  }
+  .article-box img {
+    width: 100%;
+  }
+  .article-box p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+  }
+</style>
