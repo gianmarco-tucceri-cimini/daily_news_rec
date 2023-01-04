@@ -1,10 +1,10 @@
 # Italian Daily News Scraper (research use-only)
 app to collect in one place all main articles from:
-- www.wired.it
-- www.ansa.it
-- www.sole24ore.com
-- www.lastampa.it
-- www.nationalgeographic.it
+- www.wired.it (working 04/01/23)
+- www.ansa.it (working 04/01/23)
+- www.sole24ore.com (working 04/01/23)
+- www.lastampa.it (working 04/01/23)
+- www.nationalgeographic.it (working 04/01/23)
 
 HOW TO USE
 
