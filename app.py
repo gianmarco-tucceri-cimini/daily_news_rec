@@ -1,5 +1,3 @@
-
-
 from flask import Flask, render_template, request, make_response
 import pandas as pd
 import datetime
@@ -40,7 +38,14 @@ def get_current_user():
 
 @app.route("/")
 def index():
-    # Carica il dataframe
+
+    # Recupera l'utente corrente (per esempio, dal browser o dal dispositivo)
+    current_user = get_current_user()
+    
+    # Carica il dataframe delle interazioni
+    df_interactions = pd.read_csv("data/interactions.csv")
+
+    # Carica il dataframe delle notizie
     df = pd.read_csv("data/daily_news.csv")
     df_oggi = df.loc[df['date'] == datetime.datetime.today().strftime("%Y-%m-%d")]
 
@@ -51,18 +56,22 @@ def index():
             "title": row["title"],
             "link": row["link"],
             "image": row["image"],
+            "likes": row["likes"],  # Aggiungi il numero di like all'articolo
         })
         
     # Se non ci sono articoli per il giorno corrente
     if len(articles) == 0:
         return render_template("index.html", message="il giornale lo scaricano alle 9")
 
-    return render_template("index.html", articles=articles)
+    return render_template("index.html", articles=articles, current_user=current_user)
 
 @app.route("/like", methods=["POST"])
 def like():
     # Carica il dataframe delle interazioni
     df_interactions = pd.read_csv("data/interactions.csv")
+
+    # Carica il dataframe delle notizie
+    df = pd.read_csv("data/daily_news.csv")
 
     # Recupera l'utente corrente (per esempio, dal browser o dal dispositivo)
     current_user = get_current_user()
@@ -76,9 +85,15 @@ def like():
     # Se l'utente non ha ancora espresso un like per questo articolo, aggiungi una nuova riga al dataframe
     if not already_liked.any():
         df_interactions = df_interactions.append({'user_id': current_user, 'link': link}, ignore_index=True)
+    
+    # Aggiorna il numero di like per l'articolo nel dataframe delle notizie
+    df.loc[df['link'] == link, 'likes'] += 1
 
     # Salva il dataframe aggiornato
     df_interactions.to_csv("data/interactions.csv", index=False)
+
+     # Salva ildataframe aggiornato
+    df.to_csv("data/daily_news.csv", index=False)
 
     return "OK"
 
