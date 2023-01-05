@@ -1,5 +1,7 @@
 # Italian Daily News Scraper (research use-only)
 
+VISIT [NEWS FOR LAZIES](http://gianmarcotucceri.pythonanywhere.com)
+
 [Last update 04/01/2023]
 
 app to collect in one place all main articles from:
