@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, make_response
 import pandas as pd
 import datetime
-from datetime import date
+from datetime import date, datetime
 import logging
 import uuid
 import hashlib
 import random
+import geoip2.database
+import requests
 
 app = Flask(__name__)
 
@@ -37,6 +39,24 @@ def get_current_user():
     else:
         return user_id, None
 
+def get_location(ip_address):
+    # Apri il database di geolocalizzazione
+    reader = geoip2.database.Reader("GeoLite2-City.mmdb")
+
+    # Cerca l'indirizzo IP nel database
+    response = reader.city(ip_address)
+
+    # Recupera la località (paese, regione, città)
+    country = response.country.name
+    region = response.subdivisions.most_specific.name
+    city = response.city.name
+
+    # Chiudi il database
+    reader.close()
+
+    # Restituisci la località
+    return f"{city}, {region}, {country}"
+
 @app.route("/")
 def index():
 
@@ -48,7 +68,7 @@ def index():
 
     # Carica il dataframe delle notizie
     df = pd.read_csv("data/daily_news.csv")
-    df_oggi = df.loc[df['date'] == datetime.datetime.today().strftime("%Y-%m-%d")]
+    df_oggi = df.loc[df['date'] == datetime.today().strftime("%Y-%m-%d")]
 
     # Riordino casualmente gli articoli di oggi
     df_oggi = df_oggi.sample(frac=1, random_state=random.seed(42))
@@ -80,6 +100,12 @@ def like():
     # Recupera l'utente corrente (per esempio, dal browser o dal dispositivo)
     current_user = get_current_user()
 
+    # Recupera l'indirizzo IP dell'utente
+    ip_address = request.remote_addr
+
+    # Recupera il timestamp corrente
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     # Recupera il link dell'articolo dai dati inviati con la richiesta POST
     link = request.form["link"]
 
@@ -88,7 +114,7 @@ def like():
 
     # Se l'utente non ha ancora espresso un like per questo articolo, aggiungi una nuova riga al dataframe
     if not already_liked.any():
-        df_interactions = df_interactions.append({'user_id': current_user, 'link': link}, ignore_index=True)
+        df_interactions = df_interactions.append({'user_id': current_user, 'link': link, 'ip_address': ip_address, 'timestamp': timestamp}, ignore_index=True)
     
     # Aggiorna il numero di like per l'articolo nel dataframe delle notizie
     df.loc[df['link'] == link, 'likes'] += 1
