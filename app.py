@@ -19,6 +19,10 @@ def index():
             "link": row["link"],
             "image": row["image"],
         })
+        
+    # Se non ci sono articoli per il giorno corrente
+    if len(articles) == 0:
+        return render_template("index.html", message="il giornale lo scaricano alle 9")
 
     return render_template("index.html", articles=articles)
 
