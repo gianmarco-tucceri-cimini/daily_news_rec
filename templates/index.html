@@ -3,6 +3,7 @@
         <body>
           <head>
              <title>News per Pigri</title>
+             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <link rel="icon" type="image/png" href="https://i.ibb.co/R7Xyb42/logo.png"/>
           </head>
             <div class='image'>
@@ -19,6 +20,7 @@
                   <a href="{{ article.link }}">
                     <img src="{{ article.image }}">
                     <p>{{ article.title }}</p>
+                    <button id="{{ article.link }}" class="like-button"><i class="fa fa-heart" aria-hidden="true"></i>Like</button>
                   </a>
                 </div>
               {% endfor %}
@@ -28,12 +30,27 @@
                 <div class='film'>
                 </div>
                 <script type="text/javascript" src="https://www.counters-free.net/count/bwjm"></script>
-                <iframe src="/home/gianmarcotucceri/mysite/templates/Changes-fiftysounds.mp3" allow="autoplay" id="audio" hidden ></iframe>
-                <!-- <iframe src="silence.mp3" allow="autoplay" id="audio" style="display: none;"></iframe> -->
-                <audio autoplay controls loop playsinline id="playAudio">
-                  <source src="/home/gianmarcotucceri/mysite/templates/Changes-fiftysounds.mp3" type="audio/mp3">
-                </audio>
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6csLn4rVySH07fh4nNv7A8?utm_source=generator&theme=0" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </main>
+          <script>
+            function sendLike(event, articleId) {
+              event.preventDefault();
+              var xhr = new XMLHttpRequest();
+              xhr.open("GET", "/like/" + articleId);
+              xhr.send();
+            }
+            </script>
+            <script>
+              $(document).ready(function() {
+                $('.like-button').click(function() {
+                  var link = $(this).attr('id');
+                  $.post('/like', { 'link': link }, function(response) {
+                    console.log(response);
+                    window.location.replace('/');
+                  });
+                });
+              });
+              </script>
         </body>
     </html>
 
@@ -50,7 +67,7 @@
       }
       main {
       margin:10;
-      height:30vh;
+      height:50vh;
       display:grid;
       place-items:center;
       background:#f7f4d8;
@@ -96,21 +113,30 @@
         height: 200px;
       }
       .article-box p {
-        font-family: Roboto, sans-serif;
-        margin: 0;
-        font-size: 18px;
-        font-weight: bold;
-        padding: 10px;
-        height: 100px;
+      font-family: Roboto, sans-serif;
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px;
+      height: 100px;
+      }
+      .like-button{
+      background: #fff;
+      border: unset;
+      outline: 0;
+      font-size: 18px;
+      cursor: pointer;
+      color: #65676b;
+      padding: 5px 10px;  
       }
       .article-box img {
       border-top-left-radius: 0px;
       border-top-right-radius: 0px;
       }
       h1 {
-        text-align:center;
-        padding: 15px;
-    }
+      text-align:center;
+      padding: 15px;
+      }
 
       /* mobile view */
       @media only screen and (min-height: 926px) {
@@ -144,6 +170,15 @@
       height:4rem;
       display:flex;
       position:relative;
+      }
+      .like-button{
+      background: #fff;
+      border: unset;
+      outline: 0;
+      font-size: 18px;
+      cursor: pointer;
+      color: #65676b;
+      padding: 5px 10px;  
       }
       a:link {
       text-decoration: none;
