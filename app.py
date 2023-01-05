@@ -5,6 +5,7 @@ from datetime import date
 import logging
 import uuid
 import hashlib
+import random
 
 app = Flask(__name__)
 
@@ -48,6 +49,9 @@ def index():
     # Carica il dataframe delle notizie
     df = pd.read_csv("data/daily_news.csv")
     df_oggi = df.loc[df['date'] == datetime.datetime.today().strftime("%Y-%m-%d")]
+
+    # Riordino casualmente gli articoli di oggi
+    df_oggi = df_oggi.sample(frac=1, random_state=random.seed(42))
 
     # Crea una lista di dizionari con i dati degli articoli
     articles = []
