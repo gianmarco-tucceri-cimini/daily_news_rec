@@ -1,5 +1,1 @@
-user_id,link,ip_address,timestamp
-https://www.nationalgeographic.it/coronavirus,,,
-https://www.nationalgeographic.it/ambiente/2022/04/la-guerra-in-ucraina-potrebbe-far-piombare-il-mondo-nella-carestia,192.168.1.53,,
-dc0cb11511e776de02c027e6d375fb2977d0682efefc33b2825d93001093ed24,https://www.nationalgeographic.it/storia-e-civilta/2022/03/le-storie-strazianti-dei-rifugiati-ucraini,192.168.1.53,
-dc0cb11511e776de02c027e6d375fb2977d0682efefc33b2825d93001093ed24,https://www.nationalgeographic.it/storia-e-civilta/2022/10/10-interessanti-curiosita-sulla-scoperta-della-tomba-di-tutankhamon,192.168.1.53,2023-01-05 21:45:40
+user_id,link,ip_address,timestamp,location

@@ -5,6 +5,7 @@
              <title>News per Pigri</title>
              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <link rel="icon" type="image/png" href="https://i.ibb.co/R7Xyb42/logo.png"/>
+                <script src="https://kit.fontawesome.com/edaf8b9ac4.js" crossorigin="anonymous"></script>
           </head>
             <div class='image'>
                 <img class="center"  src="https://i.ibb.co/QCD1TF3/logo.png" alt="News4Lazies">
@@ -20,8 +21,9 @@
                   <a href="{{ article.link }}">
                     <img src="{{ article.image }}">
                     <p>{{ article.title }}</p>
-                    <div class="likes-counter">&#x2764; {{ article.likes }}</div>
-                    <button id="{{ article.link }}" class="like-button"><i class="fa fa-heart" aria-hidden="true"></i>Like</button>
+                    <div class="likes-counter"><i class="fa-regular fa-book-open"></i>
+                       {{ article.likes }}</div>
+                    <button id="{{ article.link }}" class="like-button"><i class="" aria-hidden="true"></i>Leggi</button>
                   </a>
                 </div>
               {% endfor %}
@@ -123,9 +125,10 @@
       height: 100px;
       }
       .like-button{
-      background: red;
+      background: #33DCFF;
       border: unset;
       outline: 0;
+      font-family: Arial bold;
       font-size: 18px;
       cursor: pointer;
       color: #65676b;
@@ -155,6 +158,10 @@
       h1 {
       text-align:center;
       padding: 15px;
+      }
+      .book {
+        width: 10px;
+        height: 10px;
       }
 
       /* mobile view */
@@ -197,16 +204,17 @@
       position:relative;
       }
       .like-button{
-      background: red;
+      background: #33DCFF;
       border: unset;
+      font-family: Arial bold;
       outline: 0;
       font-size: 60px;
       cursor: pointer;
       color: white;
       padding: 30px 40px;
       position: relative;
-      top: 206;
-      left: 300;  
+      top: 210;
+      left: 285;  
       }
       a:link {
       text-decoration: none;

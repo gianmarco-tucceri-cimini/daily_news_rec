@@ -40,22 +40,23 @@ def get_current_user():
         return user_id, None
 
 def get_location(ip_address):
-    # Apri il database di geolocalizzazione
-    reader = geoip2.database.Reader("GeoLite2-City.mmdb")
+    # Costruisci l'URL dell'API
+    api_url = f"https://api.ip2location.io/?key={LGKZK4WSTZ}&ip={ip_address}"
 
-    # Cerca l'indirizzo IP nel database
-    response = reader.city(ip_address)
+    # Invia la richiesta all'API e recupera la risposta
+    response = requests.get(api_url)
 
-    # Recupera la località (paese, regione, città)
-    country = response.country.name
-    region = response.subdivisions.most_specific.name
-    city = response.city.name
+    # Verifica se la richiesta ha avuto successo
+    if response.status_code == 200:
+        # Recupera la località dalla risposta
+        location = response.json()
+        city = location["city"]
 
-    # Chiudi il database
-    reader.close()
-
-    # Restituisci la località
-    return f"{city}, {region}, {country}"
+        # Restituisci la località
+        return f"{city}"
+    else:
+        # Se la richiesta non è riuscita, restituisci un messaggio di errore
+        return "Errore durante il recupero della località"
 
 @app.route("/")
 def index():
@@ -109,15 +110,23 @@ def like():
     # Recupera il link dell'articolo dai dati inviati con la richiesta POST
     link = request.form["link"]
 
+    # Controlla se l'utente è già presente nel dataframe delle interazioni
+    user_exists = df_interactions['user_id'] == current_user
+    if user_exists.any():
+        # Se l'utente è già presente, recupera la sua località dal dataframe
+        location = df_interactions[user_exists]['location'].iloc[0]
+    else:
+        # Se l'utente non è presente, utilizza la funzione get_location per recuperare la sua località
+        location = get_location(ip_address)
+
     # Controlla se l'utente ha già espresso un like per questo articolo
     already_liked = (df_interactions['user_id'] == current_user) & (df_interactions['link'] == link)
 
     # Se l'utente non ha ancora espresso un like per questo articolo, aggiungi una nuova riga al dataframe
     if not already_liked.any():
-        df_interactions = df_interactions.append({'user_id': current_user, 'link': link, 'ip_address': ip_address, 'timestamp': timestamp}, ignore_index=True)
-    
-    # Aggiorna il numero di like per l'articolo nel dataframe delle notizie
-    df.loc[df['link'] == link, 'likes'] += 1
+        df_interactions = df_interactions.append({'user_id': current_user, 'link': link, 'ip_address': ip_address, 'timestamp': timestamp, 'location': location}, ignore_index=True)
+        # Aggiorna il numero di like per l'articolo nel dataframe delle notizie
+        df.loc[df['link'] == link, 'likes'] += 1
 
     # Salva il dataframe aggiornato
     df_interactions.to_csv("data/interactions.csv", index=False)
