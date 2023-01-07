@@ -21,7 +21,7 @@
                   <a href="{{ article.link }}">
                     <img src="{{ article.image }}">
                     <p>{{ article.title }}</p>
-                    <div class="likes-counter"><i class="fa-regular fa-book-open"></i>
+                    <div class="likes-counter"><i class="fa-regular fa-book-open <%= 'icon-liked' if liked else '' %>"></i>
                        {{ article.likes }}</div>
                     <button id="{{ article.link }}" class="like-button"><i class="" aria-hidden="true"></i>Leggi</button>
                   </a>
@@ -124,11 +124,14 @@
       padding: 10px;
       height: 100px;
       }
+      .icon-liked {
+      color: blue;
+      }
       .like-button{
       background: #33DCFF;
       border: unset;
       outline: 0;
-      font-family: Arial bold;
+      font-family: Roboto, sans-serif;
       font-size: 18px;
       cursor: pointer;
       color: #65676b;

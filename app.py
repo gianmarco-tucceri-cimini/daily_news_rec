@@ -58,6 +58,17 @@ def get_location(ip_address):
         # Se la richiesta non è riuscita, restituisci un messaggio di errore
         return "Errore durante il recupero della località"
 
+def has_liked(user_id, link):
+    # Carica il dataframe delle interazioni
+    df_interactions = pd.read_csv("data/interactions.csv")
+
+    # Controlla se l'utente ha già espresso un like per questo articolo
+    liked = (df_interactions['user_id'] == user_id) & (df_interactions['link'] == link)
+
+    # Restituisci True se l'utente ha già espresso un like, False altrimenti
+    return liked.any()
+
+
 @app.route("/")
 def index():
 
@@ -76,12 +87,21 @@ def index():
 
     # Crea una lista di dizionari con i dati degli articoli
     articles = []
+    for index, row in df.iterrows():
+        link = row['link']
+
+    # Controlla se l'utente ha già espresso un like per questo articolo
+    liked = has_liked(current_user, link)
+
+    # Crea una lista di dizionari con i dati degli articoli
+    articles = []
     for index, row in df_oggi.iterrows():
         articles.append({
             "title": row["title"],
             "link": row["link"],
             "image": row["image"],
             "likes": row["likes"],  # Aggiungi il numero di like all'articolo
+            "liked": liked,  # Aggiungi lo stato del like all'articolo
         })
         
     # Se non ci sono articoli per il giorno corrente
@@ -112,19 +132,14 @@ def like():
 
     # Controlla se l'utente è già presente nel dataframe delle interazioni
     user_exists = df_interactions['user_id'] == current_user
-    if user_exists.any():
-        # Se l'utente è già presente, recupera la sua località dal dataframe
-        location = df_interactions[user_exists]['location'].iloc[0]
-    else:
-        # Se l'utente non è presente, utilizza la funzione get_location per recuperare la sua località
-        location = get_location(ip_address)
+    
 
     # Controlla se l'utente ha già espresso un like per questo articolo
     already_liked = (df_interactions['user_id'] == current_user) & (df_interactions['link'] == link)
 
     # Se l'utente non ha ancora espresso un like per questo articolo, aggiungi una nuova riga al dataframe
     if not already_liked.any():
-        df_interactions = df_interactions.append({'user_id': current_user, 'link': link, 'ip_address': ip_address, 'timestamp': timestamp, 'location': location}, ignore_index=True)
+        df_interactions = df_interactions.append({'user_id': current_user, 'link': link, 'ip_address': ip_address, 'timestamp': timestamp}, ignore_index=True)
         # Aggiorna il numero di like per l'articolo nel dataframe delle notizie
         df.loc[df['link'] == link, 'likes'] += 1
 
