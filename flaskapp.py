@@ -61,7 +61,6 @@ def index():
             "image": row["image"],
             "likes": row["likes"],# Aggiungi il numero di like all'articolo
             "logo": row["logo"],
-            "summary": row["summary"],
         })
 
     # Se non ci sono articoli per il giorno corrente
