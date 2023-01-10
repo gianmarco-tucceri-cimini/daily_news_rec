@@ -6,9 +6,7 @@ import logging
 import uuid
 import hashlib
 import random
-import geoip2.database
-import requests
-
+from flask import redirect
 app = Flask(__name__)
 
 def generate_unique_id():
@@ -39,46 +37,15 @@ def get_current_user():
     else:
         return user_id, None
 
-def get_location(ip_address):
-    # Costruisci l'URL dell'API
-    api_url = f"https://api.ip2location.io/?key={LGKZK4WSTZ}&ip={ip_address}"
-
-    # Invia la richiesta all'API e recupera la risposta
-    response = requests.get(api_url)
-
-    # Verifica se la richiesta ha avuto successo
-    if response.status_code == 200:
-        # Recupera la località dalla risposta
-        location = response.json()
-        city = location["city"]
-
-        # Restituisci la località
-        return f"{city}"
-    else:
-        # Se la richiesta non è riuscita, restituisci un messaggio di errore
-        return "Errore durante il recupero della località"
-
-def has_liked(user_id, link):
-    # Carica il dataframe delle interazioni
-    df_interactions = pd.read_csv("data/interactions.csv")
-
-    # Controlla se l'utente ha già espresso un like per questo articolo
-    liked = (df_interactions['user_id'] == user_id) & (df_interactions['link'] == link)
-
-    # Restituisci True se l'utente ha già espresso un like, False altrimenti
-    return liked.any()
-
-
 @app.route("/")
 def index():
-
     # Recupera l'utente corrente (per esempio, dal browser o dal dispositivo)
     current_user = get_current_user()
-    
+
     # Carica il dataframe delle interazioni
     df_interactions = pd.read_csv("data/interactions.csv")
 
-    # Carica il dataframe delle notizie
+    # Carica il dataframe
     df = pd.read_csv("data/daily_news.csv")
     df_oggi = df.loc[df['date'] == datetime.today().strftime("%Y-%m-%d")]
 
@@ -87,23 +54,15 @@ def index():
 
     # Crea una lista di dizionari con i dati degli articoli
     articles = []
-    for index, row in df.iterrows():
-        link = row['link']
-
-    # Controlla se l'utente ha già espresso un like per questo articolo
-    liked = has_liked(current_user, link)
-
-    # Crea una lista di dizionari con i dati degli articoli
-    articles = []
     for index, row in df_oggi.iterrows():
         articles.append({
             "title": row["title"],
             "link": row["link"],
             "image": row["image"],
-            "likes": row["likes"],  # Aggiungi il numero di like all'articolo
-            "liked": liked,  # Aggiungi lo stato del like all'articolo
+            "likes": row["likes"],# Aggiungi il numero di like all'articolo
+            "logo": row["logo"],
         })
-        
+
     # Se non ci sono articoli per il giorno corrente
     if len(articles) == 0:
         return render_template("index.html", message="il giornale lo scaricano alle 9")
@@ -130,16 +89,12 @@ def like():
     # Recupera il link dell'articolo dai dati inviati con la richiesta POST
     link = request.form["link"]
 
-    # Controlla se l'utente è già presente nel dataframe delle interazioni
-    user_exists = df_interactions['user_id'] == current_user
-    
-
     # Controlla se l'utente ha già espresso un like per questo articolo
     already_liked = (df_interactions['user_id'] == current_user) & (df_interactions['link'] == link)
 
     # Se l'utente non ha ancora espresso un like per questo articolo, aggiungi una nuova riga al dataframe
     if not already_liked.any():
-        df_interactions = df_interactions.append({'user_id': current_user, 'link': link, 'ip_address': ip_address, 'timestamp': timestamp}, ignore_index=True)
+        df_interactions = df_interactions.append({'timestamp': timestamp, 'user_id': current_user, 'link': link, 'ip_address': ip_address}, ignore_index=True)
         # Aggiorna il numero di like per l'articolo nel dataframe delle notizie
         df.loc[df['link'] == link, 'likes'] += 1
 
