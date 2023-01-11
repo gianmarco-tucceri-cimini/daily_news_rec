@@ -1,4 +1,4 @@
-# NEWS PAPERS TTS AND COLLABORATIVE FILTERING MODELS (research use-only)
+# (All-in-one) News papers analizer (Transformers, TTS, NLP and collaborative filtering) (research use-only)
 
 VISIT [NEWS FOR LAZIES](http://www.newsforlazies.it)
 
