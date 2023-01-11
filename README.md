@@ -13,11 +13,13 @@ app to collect in one place all main articles from:
 - www.forbes.it
 - www.limesonline.com
 
-HOW TO USE
+HOW IT WORKS
 
-1. clone repository
-2. run notebook "load_daily_news.ipynb"
-3. run this command "python app.py"
+- COLLABORATIVE FILTERING This research project aim to fit a model to recommend news articles using content-based and user-based collaborative filtering.
+- EMBEDDING and TRANSFORMERS to summarize text
+- TTS MODEL to read articles
+
+Use this app to help us to develop better AI models for a free and better information.
 
 enjoy the reading
 
