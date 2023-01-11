@@ -2,7 +2,7 @@
 
 VISIT [NEWS FOR LAZIES](http://www.newsforlazies.it)
 
-[Last update 04/01/2023]
+[Last update 11/01/2023]
 
 app to collect in one place all main articles from:
 - www.wired.it
