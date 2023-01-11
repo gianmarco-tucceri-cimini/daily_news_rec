@@ -3,6 +3,6 @@
 **/audio/**
 **/audio/**
 **/templates/index.html**
-**/app.py**
+**app.py**
 **/data/daily_news.csv**
 **/data/interactions.csv**
