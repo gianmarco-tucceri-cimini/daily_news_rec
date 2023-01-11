@@ -1,6 +1,6 @@
 # Italian Daily News Scraper (research use-only)
 
-VISIT [NEWS FOR LAZIES](http;//www.newsforlazies.it)
+VISIT [NEWS FOR LAZIES](http://www.newsforlazies.it)
 
 [Last update 04/01/2023]
 
