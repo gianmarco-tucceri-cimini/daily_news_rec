@@ -1,6 +1,6 @@
 # Italian Daily News Scraper (research use-only)
 
-VISIT [NEWS FOR LAZIES](www.newsforlazies.it)
+VISIT [NEWS FOR LAZIES]http;//www.newsforlazies.it)
 
 [Last update 04/01/2023]
 
@@ -10,6 +10,8 @@ app to collect in one place all main articles from:
 - www.sole24ore.com
 - www.lastampa.it
 - www.nationalgeographic.it
+- www.forbes.it
+- www.limesonline.com
 
 HOW TO USE
 
