@@ -2,9 +2,9 @@
     <html>
         <body>
           <head>
-             <title>News per Pigri</title>
+             <title>News per pigri</title>
+             <link href="/images/favicon-2.ico" rel="icon" type="/root/newsforlazies/templates/image/x-icon" />
              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <link rel="icon" type="image/png" href="https://i.ibb.co/R7Xyb42/logo.png"/>
                 <script src="https://kit.fontawesome.com/edaf8b9ac4.js" crossorigin="anonymous"></script>
           </head>
             <div class='image'>
@@ -18,7 +18,6 @@
           {% else %}
               {% for article in articles %}
                 <div class="article-box">
-                  <div id="overlay" style="display: none;">Questo è il contenuto della schermata scorrevole</div>
                     <img src="{{ article.image }}">
                     <p>{{ article.title }}</p>
                     <div class="container">
@@ -26,6 +25,7 @@
                     <img src="{{ article.logo }}" alt="Logo">
                 </div>
                     <button id="{{ article.link }}"class="like-button"><i class="" aria-hidden="true"></i>Leggi</button>
+                    <audio src="{{ article.audio }}" id="audio" controls class="hidden"></audio>
                 </div>
               {% endfor %}
             {% endif %}
@@ -34,7 +34,7 @@
                 <div class='film'>
                 </div>
                 <script type="text/javascript" src="https://www.counters-free.net/count/bwjm"></script>
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6csLn4rVySH07fh4nNv7A8?utm_source=generator&theme=0" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                
             </main>
             <div class="center">Current user: {{ current_user }}</div>
           <script>
@@ -56,10 +56,13 @@
                 });
               });
               </script>
-              <script>var container = document.getElementById("container");
-                var overlay = document.getElementById("overlay");
-                container.addEventListener("click", function() {
-                    overlay.style.display = "block";
+              <script>const playButtons = document.querySelectorAll('.play-button');
+                const audioPlayers = document.querySelectorAll('.audio-player');
+                
+                playButtons.forEach(function(button, index) {
+                    button.addEventListener('click', function() {
+                        audioPlayers[index].classList.remove('hidden');
+                    });
                 });</script>
         </body>
     </html>
@@ -74,6 +77,11 @@
       body {
         background: linear-gradient(to bottom, #f4e7d1, #766b66);
         font-family: Roboto, sans-serif;
+      }
+      audio.player {
+        position: fixed;
+        bottom: 0;
+        left: 0;
       }
       main {
       margin:10;
@@ -102,6 +110,7 @@
       .article-grid {
       display: flex;
       flex-wrap: wrap;
+      max-width: 100%;
       justify-content: center;
       }
       .article-grid {
@@ -118,34 +127,16 @@
         text-align: center;
         box-shadow: 10px 10px;
       }
-      #overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      animation: slideIn 0.5s forwards;
-      }
-
-      @keyframes slideIn {
-          from {
-              transform: translateY(-100%);
-          }
-          to {
-              transform: translateY(0);
-          }
-      }
       .container img {
       position: relative;
-      bottom: -28;
+      bottom: -30;
       left: -100;
-      max-height: 1.5em;
+      max-height: 1.3em;
       max-width: 5em;
       }
       .article-box img {
         width: 300px;
-        height: 200px;
+        height: 170px;
       }
       .article-box p {
       font-family: Roboto, sans-serif;
@@ -164,9 +155,8 @@
       cursor: pointer;
       color: #65676b;
       padding: 6px 11px;
-
       position: relative;
-      top: -0.03em;
+      top: 0.1em;
       right: -6.4em;
       color: white;
       }
@@ -217,11 +207,17 @@
       background:#f7f4d8;
       padding-top: 50px;
       }
+      .article-grid {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 100%;
+      justify-content: center;
+      }
       .container img {
       position: relative;
-      bottom: -270;
+      bottom: -280;
       left: -275;
-      max-height: 5em;
+      max-height: 4em;
       max-width: 12em;
       }
       .likes-counter {
@@ -241,13 +237,13 @@
       border: unset;
       outline: 0;
       font-family: Helvetica Bold, Roboto, sans-serif;
-      font-size: 90px;
+      font-size: 60px;
       cursor: pointer;
       color: #65676b;
-      padding: 6px 11px;
+      padding: 25px 30px;
       position: relative;
-      top: 177;
-      left: 272;
+      top: 190;
+      left: 289;
       color: white;
       }
       a:link {

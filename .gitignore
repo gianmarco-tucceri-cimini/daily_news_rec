@@ -1,3 +1,8 @@
 ### Format2  ###
+**/data/**
+**/audio/**
+**/audio/**
+**/templates/index.html**
+**/app.py**
 **/data/daily_news.csv**
 **/data/interactions.csv**
