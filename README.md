@@ -1,4 +1,4 @@
-# Italian Daily News Scraper (research use-only)
+# NEWS PAPERS TTS AND COLLABORATIVE FILTERING MODELS (research use-only)
 
 VISIT [NEWS FOR LAZIES](http://www.newsforlazies.it)
 
