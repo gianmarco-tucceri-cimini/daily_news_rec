@@ -1,6 +1,6 @@
 # Italian Daily News Scraper (research use-only)
 
-VISIT [NEWS FOR LAZIES](http://gianmarcotucceri.pythonanywhere.com)
+VISIT [NEWS FOR LAZIES](www.newsforlazies.it)
 
 [Last update 04/01/2023]
 
