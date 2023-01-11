@@ -2,7 +2,10 @@
 data/*
 audio/*
 templates/index.html
-app.py
+data/interactions.csv
+data/daily_news_old.csv
+data/daily_news_old2.csv
+/app.py
 notebooks/config.py
 ### AL ###
 #Template for AL projects for Dynamics 365 Business Central
